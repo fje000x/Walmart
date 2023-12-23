@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Walmart D.C 7010 Top 5</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color: #0071ce;
+            color: white;
+            font-weight: bold;
+        }
+
+        #headerContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        #headerContainer img {
+            margin-right: 10px; /* Adjust as needed */
+        }
+
+        #workerName {
+            margin-bottom: 1em;
+        }
+
+        form {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            color: white;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        h2, h3 {
+            color: white;
+        }
+
+        .black {
+            color: black;
+        }
+
+        .delete-button {
+            cursor: pointer;
+            color: white;
+            font-weight: bold;
+        }
+
+        .addBtn {
+            margin-top: 1em;
+        }
+
+        /* Fire-like glow effect style */
+        .glowing {
+            animation: glow 1s infinite alternate;
+            background: #ff6633; /* Adjusted to a warm color */
+            color: white;
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 10px #ff6633, 0 0 20px #ff6633, 0 0 30px #ff6633;
+            }
+            to {
+                box-shadow: none;
+            }
+        }
+
+        /* Fire-like glow effect for the name and percentage boxes */
+        .glow-box {
+            background: #ff6633; /* Adjusted to a warm color */
+            box-shadow: 0 0 20px #ff6633, 0 0 30px #ff6633, 0 0 40px #ff6633;
+            animation: glow 1s infinite alternate;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 600px) {
+            form {
+                width: 80%;
+                margin: 0 auto;
+            }
+        }
+
+        /* Alternating background colors for rows after the first one */
+        tbody tr:nth-child(even) {
+            background-color: lightgrey;
+        }
+
+        tbody tr:nth-child(even) td {
+            color: black;
+        }
+
+        /* Set text color for the "Delete" button in rows after the first one to black */
+        tbody tr:not(:first-child) .delete-button {
+            color: black;
+        }
+
+        /* Apply styles to cells in rows after the first one */
+        tbody tr:not(:first-child) td {
+            background-color: lightgrey;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div id="headerContainer">
+        <h2> Walmart D.C 7010 </h2>
+        <img class="image" src="image.svg" width="60">
+    </div>
+    <h3>TOP 5</h3>
+    
+    <form id="workerForm">
+        <label for="workerName">Worker Name:</label>
+        <input type="text" id="workerName" required>
+        
+        <label for="percentage">Percentage:</label>
+        <input type="number" id="percentage" required>
+    
+        <button type="button" class="addBtn" onclick="addWorker()">Add</button>
+    </form>
+    
+    <table id="workersTable">
+        <thead>
+            <tr>
+                <th class="black">Worker Name</th>
+                <th class="black">Percentage</th>
+                <th class="black">Action</th>
+            </tr>
+        </thead>
+        <tbody id="workersBody"></tbody>
+    </table>
+    
+    <script>
+        let workers = [];
+    
+        // Load workers from local storage when the page loads
+        window.onload = function () {
+            const storedWorkers = localStorage.getItem('workers');
+            if (storedWorkers) {
+                workers = JSON.parse(storedWorkers);
+                displayTopWorkers();
+            }
+        };
+    
+        function addWorker() {
+            const workerName = document.getElementById('workerName').value;
+            const percentage = parseFloat(document.getElementById('percentage').value);
+    
+            if (!workerName || isNaN(percentage)) {
+                alert("Please enter valid values for worker name and percentage.");
+                return;
+            }
+    
+            workers.push({ name: workerName, percentage: percentage });
+            workers.sort((a, b) => b.percentage - a.percentage);
+    
+            // Save workers to local storage
+            localStorage.setItem
+    
+            // Display top 5 workers
+            displayTopWorkers();
+    
+            // Clear input fields
+            document.getElementById('workerName').value = '';
+            document.getElementById('percentage').value = '';
+        }
+    
+        function deleteWorker(index) {
+            workers.splice(index, 1);
+    
+            // Save workers to local storage
+            localStorage.setItem('workers', JSON.stringify(workers));
+    
+            displayTopWorkers();
+        }
+    
+        function displayTopWorkers() {
+            const tableBody = document.getElementById('workersBody');
+            tableBody.innerHTML = '';
+    
+            for (let i = 0; i < Math.min(workers.length, 5); i++) {
+                const row = tableBody.insertRow();
+                const cell1 = row.insertCell(0);
+                const cell2 = row.insertCell(1);
+                const cell3 = row.insertCell(2);
+    
+                cell1.textContent = workers[i].name;
+                cell2.textContent = workers[i].percentage + '%';
+    
+                const deleteButton = document.createElement('span');
+                deleteButton.textContent = 'Delete';
+                deleteButton.className = 'delete-button';
+                deleteButton.onclick = () => deleteWorker(i);
+                cell3.appendChild(deleteButton);
+    
+                // Apply fire-like glow effect to the name box of the first row
+                if (i === 0) {
+                    cell1.classList.add('glow-box');
+                    cell1.classList.add('glowing');
+                }
+    
+                // Apply fire-like glow effect to the percentage box of the first row
+                if (i === 0) {
+                    cell2.classList.add('glow-box');
+                    cell2.classList.add('glowing');
+                }
+                if (i === 0) {
+                    cell3.classList.add('glow-box');
+                    cell3.classList.add('glowing');
+                }
+    
+                // Apply styles to cells in rows after the first one
+                if (i > 0) {
+                    cell1.style.backgroundColor = 'lightgrey';
+                    cell2.style.backgroundColor = 'lightgrey';
+                    cell3.style.backgroundColor = 'lightgrey';
+                    cell1.style.color = 'black';
+                    cell2.style.color = 'black';
+                    cell3.style.color = 'black';
+                }
+            }
+        }
+    </script>
+    
+    </body>
+    </html>
+    
