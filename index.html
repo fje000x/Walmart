@@ -12,6 +12,9 @@
             background-color: #0071ce;
             color: white;
             font-weight: bold;
+            min-height: 100vh; /* Set minimum height to full viewport height */
+            display: flex;
+            flex-direction: column;
         }
 
         #headerContainer {
@@ -120,6 +123,15 @@
             background-color: lightgrey;
             color: black;
         }
+
+        /* Footer styles */
+        footer {
+            margin-top: auto; /* Push the footer to the bottom */
+            font-weight: lighter;
+            color: white;
+            padding: 10px; /* Add padding for better visibility */
+            width:100%;
+        }
     </style>
 </head>
 <body>
@@ -149,6 +161,10 @@
         </thead>
         <tbody id="workersBody"></tbody>
     </table>
+
+    <footer>
+        <p>Created by Fernando Erazo 2023. All rights reserved.</p>
+    </footer>
     
     <script>
         let workers = [];
