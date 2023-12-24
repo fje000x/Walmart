@@ -179,29 +179,33 @@
                 displayTopWorkers();
             }
         };
-    
         function addWorker() {
-            const workerName = document.getElementById('workerName').value;
-            const percentage = parseFloat(document.getElementById('percentage').value);
-    
-            if (!workerName || isNaN(percentage)) {
-                alert("Please enter valid values for worker name and percentage.");
-                return;
-            }
-    
-            workers.push({ name: workerName, percentage: percentage });
-            workers.sort((a, b) => b.percentage - a.percentage);
-    
-            // Save workers to local storage
-            localStorage.setItem
-    
-            // Display top 5 workers
-            displayTopWorkers();
-    
-            // Clear input fields
-            document.getElementById('workerName').value = '';
-            document.getElementById('percentage').value = '';
-        }
+    const workerName = document.getElementById('workerName').value;
+    const percentage = parseFloat(document.getElementById('percentage').value);
+
+    if (!workerName || isNaN(percentage)) {
+        alert("Please enter valid values for worker name and percentage.");
+        return;
+    }
+
+    workers.push({ name: workerName, percentage: percentage });
+    workers.sort((a, b) => b.percentage - a.percentage);
+
+    try {
+        // Save workers to local storage
+        localStorage.setItem('workers', JSON.stringify(workers));
+    } catch (e) {
+        console.error('Error saving to local storage:', e);
+    }
+
+    // Display top 5 workers
+    displayTopWorkers();
+
+    // Clear input fields
+    document.getElementById('workerName').value = '';
+    document.getElementById('percentage').value = '';
+}
+       
     
         function deleteWorker(index) {
             workers.splice(index, 1);
